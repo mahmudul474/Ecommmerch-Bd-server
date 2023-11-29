@@ -1,0 +1,23 @@
+.label{
+  display: block;
+  text-align: left; /* You can adjust the text alignment as needed */
+}
+
+
+.inputfield{
+  padding: 10px  4px !important;
+  border: 1px solid  black !important;
+  border-radius: 10px ;
+  width: full;
+  color: black;
+  font-weight: 500;
+}
+
+
+.sub-category {
+  display: none;
+}
+
+.Option:hover .sub-category {
+  display: block;
+}

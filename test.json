@@ -1,0 +1,118 @@
+{
+    "success": true,
+    "message": "Products fetched successfully",
+    "data": {
+      "data": [
+        {
+          "_id": "650be500d53a73e72080c2d9",
+          "name": "Variable Product 27",
+          "description": "Description for Variable Product 27",
+          "short_description": null,
+          "category": "Health & Wellness",
+          "price": null,
+          "stock": null,
+          "images": [
+            "image27.jpg",
+            "image28.jpg"
+          ],
+          "thumbnail": "thumbnail27.jpg",
+          "reviews": [],
+          "productType": "variable_product",
+          "tags": [
+            "Tag27",
+            "Tag28"
+          ],
+          "attributes": [
+            {
+              "label": "Weight",
+              "values": [
+                "Light",
+                "Medium"
+              ]
+            },
+            {
+              "label": "Size",
+              "values": [
+                "Small",
+                "Medium"
+              ]
+            }
+          ],
+          "discount": null,
+          "status": "published",
+          "variableProducts": [
+            {
+              "image": "variable-image27.jpg",
+              "price": "89.99",
+              "stock": 25,
+              "attributes": [
+                {
+                  "label": "Weight",
+                  "value": "Medium"
+                },
+                {
+                  "label": "Size",
+                  "value": "Medium"
+                }
+              ],
+              "_id": "650be500d53a73e72080c2da"
+            }
+          ],
+          "metadata": {
+            "title": "this is title",
+            "description": "this is description"
+          },
+          "createdAt": "2023-09-21T06:38:56.171Z",
+          "updatedAt": "2023-09-21T06:38:56.171Z"
+        },
+        {
+          "_id": "650be45bd53a73e72080c2d7",
+          "name": "Smart watch",
+          "description": "Product details description",
+          "short_description": "Product short description",
+          "category": "Electronics",
+          "price": "2500",
+          "stock": 100,
+          "images": [
+            "image1.jpg",
+            "image2.jpg",
+            "image3.jpg"
+          ],
+          "thumbnail": "thumbnail.jpg",
+          "reviews": [],
+          "productType": "simple_product",
+          "tags": [
+            "black_friday"
+          ],
+          "attributes": [
+            {
+              "label": "color",
+              "values": [
+                "black",
+                "white",
+                "red"
+              ]
+            }
+          ],
+          "discount": {
+            "type": "fixed",
+            "value": 300
+          },
+          "status": "published",
+          "metadata": {
+            "title": "Iphone 15pro max in Bangladesh.",
+            "description": "This is meta description for the product page"
+          },
+          "variableProducts": [],
+          "createdAt": "2023-09-21T06:36:11.452Z",
+          "updatedAt": "2023-09-21T06:36:11.452Z"
+        }
+      ],
+      "meta": {
+        "page": 1,
+        "limit": 10,
+        "total": 2
+      }
+    },
+    "statusCode": 200
+  }
