@@ -1,5 +1,6 @@
-import { useState, useEffect } from "react";
 import AWS from "aws-sdk";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 // Load environment variables from a .env file
 
@@ -57,22 +58,40 @@ function useS3() {
   };
 
   const uploadMultipleToS3 = async (files) => {
-    if (!s3) {
-      console.error("S3 is not initialized.");
-      return [];
+    try {
+      // console.log(files);
+      // const upload = await axios.post('http://localhost:9000/api/v1/files/upload',files)
+
+      // console.log({upload});
+
+      const upload = await axios.post('http://localhost:9000/api/v1/files/upload',files)
+      console.log(upload.data);
+
+
+      // for(const file of files){
+      //   const upload = await axios.post('http://localhost:9000/api/v1/files/upload',file)
+      //   console.log(file,upload.data);
+      // }
+
+      // if (!s3) {
+      //   console.error("S3 is not initialized.");
+      //   return [];
+      // }
+
+      const uploadedUrls = [];
+
+      // for (const file of files) {
+      //   const key = `path/to/${file.name}`;
+      //   const url = await uploadToS3(file, key);
+      //   if (url) {
+      //     uploadedUrls.push(url);
+      //   }
+      // }
+
+      return uploadedUrls;
+    } catch (error) {
+      console.log(error.message);
     }
-
-    const uploadedUrls = [];
-
-    for (const file of files) {
-      const key = `path/to/${file.name}`;
-      const url = await uploadToS3(file, key);
-      if (url) {
-        uploadedUrls.push(url);
-      }
-    }
-
-    return uploadedUrls;
   };
 
   const getImageUrlFromS3 = (key) => {

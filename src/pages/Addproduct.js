@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { Button, Col, Form, Input, InputNumber, Row } from "antd";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import { Select, Space } from "antd";
-import "./Addproduct.css";
 import { CloseOutlined } from "@ant-design/icons";
+import { Button, Col, Form, Input, InputNumber, Row, Select } from "antd";
 import { Option } from "antd/es/mentions";
 import axios from "axios";
-import Variyetions from "../components/VariyableProduct/Variyetions";
+import React, { useEffect, useState } from "react";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import { useNavigate } from "react-router-dom";
+import Variyetions from "../components/VariyableProduct/Variyetions";
 import useS3 from "../hooks/useS3";
 import { base_url } from "../utils/baseUrl";
+import uploadImages from "../utils/imgUpload";
+import "./Addproduct.css";
 
 const Addproduct = () => {
   const [form] = Form.useForm();
@@ -41,30 +41,44 @@ const Addproduct = () => {
   const [selectedMultipleFiles, setSelectedMultipleFiles] = useState([]);
 
   const handleThumnilFileChange = async (event) => {
-    const file = event.target.files[0];
+    // const file = event.target.files;
+    // console.log(file);
+    const fieldName = event.target.name
+    const files = event.target.files;
+    console.log({
+      fieldName,
+      files
+    });
+    const urls = await uploadImages(fieldName, files)
 
-    if (file) {
-      setSelectedSingleFile(file);
-      const key = `path/to/${file.name}`;
-      const url = await uploadToS3(file, key);
-
-      if (url) {
-        setSingleImageLink(url);
-      }
-    }
+    console.log(urls[0]);
+    setSingleImageLink(urls[0]);
+    // if (file) {
+    //   setSelectedSingleFile(file);
+    //   const key = `path/to/${file.name}`;
+    //   const url = await uploadToS3(file, key);
+    //   console.log(url);
+    //   if (url) {
+    //     setSingleImageLink(url);
+    //   }
+    // }
   };
 
   const handleMultipleImagesChange = async (event) => {
+    const fieldName = event.target.name
     const files = event.target.files;
+    const urls = await uploadImages(fieldName, files)
 
-    if (files.length > 0) {
-      setSelectedMultipleFiles([...files]);
-      const urls = await uploadMultipleToS3(files);
-
-      if (urls.length > 0) {
-        setMultipleImageLinks(urls);
-      }
-    }
+    console.log({ urls });
+    setMultipleImageLinks(urls);
+    // if (files.length > 0) {
+    //   setSelectedMultipleFiles([...files]);
+    //   const urls = await uploadMultipleToS3(files);
+    //   //url check
+    //   if (urls.length > 0) {
+    //     setMultipleImageLinks(urls);
+    //   }
+    // }
   };
 
   const [attributes, setAttributes] = useState([{ label: "", values: [] }]);
@@ -399,7 +413,7 @@ const Addproduct = () => {
                   fontWeight: "bold",
                 }}
               >
-                <input type="file" onChange={handleThumnilFileChange} />
+                <input type="file" name="thumbnail" onChange={handleThumnilFileChange} />
               </Form.Item>
             </Col>
             <Col xs={24} lg={12}>
@@ -422,9 +436,11 @@ const Addproduct = () => {
               >
                 <input
                   className="bg-red-400"
+                  name="images"
                   type="file"
                   multiple
                   onChange={handleMultipleImagesChange}
+                // onChange={(e)=>console.log(e.target.files)}
                 />
               </Form.Item>
             </Col>
