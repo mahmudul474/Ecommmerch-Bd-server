@@ -2,8 +2,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const uploadImages = async (fieldName, files) => {
-  const loadingToastId = toast.loading(`Uploading ${fieldName}...`, {
-    delay: 500
+  const loadingToastId = toast.loading(`Uploading ${fieldName}...`,{
+    delay:500
   });
   try {
     const imagesList = new FormData();
@@ -17,7 +17,7 @@ const uploadImages = async (fieldName, files) => {
       render: `${fieldName} Uploaded successfully`,
       type: "success",
       isLoading: false,
-      autoClose: true
+      autoClose: 700,
     });
 
     console.log(upload.data);
@@ -32,9 +32,9 @@ const uploadImages = async (fieldName, files) => {
     return urls;
   } catch (error) {
     toast.dismiss(loadingToastId)
-    toast.error('Product not added.' + error?.response?.data?.message || error?.message, {
+    toast.error(error?.response?.data?.message || error?.message, {
       toastId: fieldName + "-error", // Use a unique toastId for error Toast
-      autoClose: 3000
+      autoClose:3000
     });
   }
 }

@@ -174,7 +174,7 @@ const Addproduct = () => {
       navigate("/admin/list-product");
     } catch (error) {
       toast.dismiss(loadingToast)
-      toast.error(error?.response?.data?.message || error?.message, {
+      toast.error(`Product not uploaded. ${error?.response?.data?.message || error?.message}`, {
         toastId: 'Product' + "-error", // Use a unique toastId for error Toast
         autoClose: 3000,
         delay: 500
