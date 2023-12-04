@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import Variyetions from "../components/VariyableProduct/Variyetions";
 import useS3 from "../hooks/useS3";
 import { base_url } from "../utils/baseUrl";
@@ -39,20 +40,23 @@ const Addproduct = () => {
   const { uploadToS3, uploadMultipleToS3 } = useS3();
   const [selectedSingleFile, setSelectedSingleFile] = useState(null);
   const [selectedMultipleFiles, setSelectedMultipleFiles] = useState([]);
+  const [selectedThumbnailFiles, setSelectedThumbnailFiles] = useState(null);
+  const [selectedImagesFiles, setSelectedImagesFiles] = useState([])
 
   const handleThumnilFileChange = async (event) => {
-    // const file = event.target.files;
-    // console.log(file);
-    const fieldName = event.target.name
+    // const fieldName = event.target.name
     const files = event.target.files;
-    console.log({
-      fieldName,
-      files
-    });
-    const urls = await uploadImages(fieldName, files)
+    // console.log({
+    //   fieldName,
+    //   files
+    // });
+    // const urls = await uploadImages(fieldName, files)
 
-    console.log(urls[0]);
-    setSingleImageLink(urls[0]);
+    // console.log(urls[0]);
+    // setSingleImageLink(urls[0]);
+
+    setSelectedThumbnailFiles(files)
+
     // if (file) {
     //   setSelectedSingleFile(file);
     //   const key = `path/to/${file.name}`;
@@ -65,12 +69,14 @@ const Addproduct = () => {
   };
 
   const handleMultipleImagesChange = async (event) => {
-    const fieldName = event.target.name
+    // const fieldName = event.target.name
     const files = event.target.files;
-    const urls = await uploadImages(fieldName, files)
+    // const urls = await uploadImages(fieldName, files)
 
-    console.log({ urls });
-    setMultipleImageLinks(urls);
+    // console.log({ urls });
+    // setMultipleImageLinks(urls);
+    setSelectedImagesFiles(files)
+
     // if (files.length > 0) {
     //   setSelectedMultipleFiles([...files]);
     //   const urls = await uploadMultipleToS3(files);
@@ -112,44 +118,68 @@ const Addproduct = () => {
   };
 
   const [categoryData, setCategoryData] = useState([]);
-  const onFinish = (values) => {
-    let product = {
-      name: values?.name,
-      category: selectedCategory,
-      productType: productType,
-      price: parseFloat(values?.price),
-      images: multipleImageLinks,
-      thumbnail: singleImageLink,
-      stock: values.stock,
-      description: values.description,
-      short_description: values.short_description,
-      attributes: values.attributes,
-      tags: values.tags,
-      slug: values.slug,
-      metadata: {
-        title: values?.MetaTitle,
-        description: values?.MetaDescription,
-      },
-      variableProducts:
-        productType === "variable_product" ? values?.variyations : [],
-    };
 
-    if (values.discountType && values.DiscountAmount) {
-      product.discount = {
-        type: values.discountType,
-        value: values.DiscountAmount,
+  const onFinish = async (values) => {
+    const loadingToast = toast.loading(`Processing product data for uploading...`);
+    try {
+
+      let thumbnail = null;
+      let images = [];
+
+      if (selectedThumbnailFiles) {
+        const urls = await uploadImages('thumbnail', selectedThumbnailFiles)
+        thumbnail = urls[0]
+      }
+      if (selectedImagesFiles) {
+        const urls = await uploadImages('images', selectedImagesFiles)
+        images = urls
+      }
+
+      let product = {
+        name: values?.name,
+        category: selectedCategory,
+        productType: productType,
+        price: parseFloat(values?.price),
+        images,
+        thumbnail,
+        stock: values.stock,
+        description: values.description,
+        short_description: values.short_description,
+        attributes: values.attributes,
+        tags: values.tags,
+        slug: values.slug,
+        metadata: {
+          title: values?.MetaTitle,
+          description: values?.MetaDescription,
+        },
+        variableProducts:
+          productType === "variable_product" ? values?.variyations : [],
       };
-    }
 
-    axios
-      .post(`${base_url}/products`, product)
-      .then((response) => {
-        console.log(response);
-        navigate("/admin/list-product");
-      })
-      .catch((error) => {
-        console.error("Error:", error);
+      if (values.discountType && values.DiscountAmount) {
+        product.discount = {
+          type: values.discountType,
+          value: values.DiscountAmount,
+        };
+      }
+
+      const response = await axios.post(`${base_url}/products`, product)
+      console.log(response);
+      toast.update(loadingToast, {
+        render: `Product Uploaded successfully`,
+        type: "success",
+        isLoading: false,
+        autoClose: 1000,
       });
+      navigate("/admin/list-product");
+    } catch (error) {
+      toast.dismiss(loadingToast)
+      toast.error(error?.response?.data?.message || error?.message, {
+        toastId: 'Product' + "-error", // Use a unique toastId for error Toast
+        autoClose: 3000,
+        delay: 500
+      });
+    }
   };
 
   //// categoty
