@@ -17,7 +17,7 @@ const uploadImages = async (fieldName, files) => {
       render: `${fieldName} Uploaded successfully`,
       type: "success",
       isLoading: false,
-      autoClose: 700,
+      autoClose: 600,
     });
 
     console.log(upload.data);

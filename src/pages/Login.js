@@ -1,9 +1,9 @@
+import { useFormik } from "formik";
 import React, { useEffect } from "react";
-import CustomInput from "../components/CustomInput";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
-import { useFormik } from "formik";
-import { useDispatch, useSelector } from "react-redux";
+import CustomInput from "../components/CustomInput";
 import { login } from "../features/auth/authSlice";
 
 let schema = yup.object().shape({
@@ -48,7 +48,7 @@ const Login = () => {
         <h3 className="text-center title">Login</h3>
         <p className="text-center">Login to your account to continue.</p>
         <div className="error text-center">
-          {message.message == "Rejected" ? "You are not an Admin" : ""}
+          {message.message == "Rejected" ? "Something is wrong!!" : ""}
         </div>
         <form action="" onSubmit={formik.handleSubmit}>
           <CustomInput

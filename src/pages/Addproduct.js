@@ -162,7 +162,7 @@ const Addproduct = () => {
           value: values.DiscountAmount,
         };
       }
-
+      console.log({ product });
       const response = await axios.post(`${base_url}/products`, product)
       console.log(response);
       toast.update(loadingToast, {
@@ -177,7 +177,7 @@ const Addproduct = () => {
       toast.error(`Product not uploaded. ${error?.response?.data?.message || error?.message}`, {
         toastId: 'Product' + "-error", // Use a unique toastId for error Toast
         autoClose: 3000,
-        delay: 500
+        delay: 600
       });
     }
   };
