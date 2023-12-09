@@ -4,9 +4,14 @@ import { base_url } from "../../utils/baseUrl";
 const login = async (user) => {
   // const response = await axios.post(`${base_url}/auth/login`, user);
   const response = await axios.post(`${base_url}/auth/admin-login`, user);
-  console.log(response.data);
   if (response.data) {
-    localStorage.setItem("user", JSON.stringify(response.data));
+    const { accessToken, email, role, uid } = response.data.data;
+    console.log({ accessToken, email, role, uid });
+    sessionStorage.setItem('accessToken', accessToken);
+    sessionStorage.setItem('uid', uid);
+    sessionStorage.setItem('role', role);
+    sessionStorage.setItem('email', email)
+    // localStorage.setItem("user", JSON.stringify(response.data));
   }
   return response.data;
 };

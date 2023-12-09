@@ -1,21 +1,32 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-const window = typeof window !== "undefined";
 
-const WithPrivateRoute = ({ children }) => {
+const ProtectedRoute = ({ children }) => {
     const [loggedin, setLoggedin] = useState(false);
     const navigate = useNavigate();
     useEffect(() => {
-        if (window) {
-            if (!JSON.parse(sessionStorage.getItem("logininfo"))?.loggedin) {
-                navigate("/login");
-            } else {
-                setLoggedin(true);
-            }
+        const haveToken = sessionStorage.getItem('accessToken')
+        if (!haveToken) {
+            setLoggedin(false);
+            setTimeout(() => {
+                navigate('/')
+            }, 500)
+        } else {
+            setLoggedin(true);
         }
     }, [])
 
-    return loggedin ? <>{children}</> : <></>
+    // useEffect(() => {
+    //     if (window) {
+    //         if (!JSON.parse(sessionStorage.getItem("logininfo"))?.loggedin) {
+    //             navigate("/login");
+    //         } else {
+    //             setLoggedin(true);
+    //         }
+    //     }
+    // }, [])
+
+    return loggedin ? <> {children} </> : <> please wait..</>
 };
 
-export default WithPrivateRoute;
+export default ProtectedRoute;
