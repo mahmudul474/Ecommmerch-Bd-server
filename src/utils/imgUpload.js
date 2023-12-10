@@ -2,8 +2,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const uploadImages = async (fieldName, files) => {
-  const loadingToastId = toast.loading(`Uploading ${fieldName}...`,{
-    delay:500
+  const loadingToastId = toast.loading(`Uploading ${fieldName}...`, {
+    delay: 500
   });
   try {
     const imagesList = new FormData();
@@ -11,7 +11,7 @@ const uploadImages = async (fieldName, files) => {
       imagesList.append(fieldName, file)
     }
 
-    const upload = await axios.post('http://localhost:9000/api/v1/files/upload', imagesList)
+    const upload = await axios.post('https://api.dreamfurniturebd.com/api/v1/files/upload', imagesList)
 
     toast.update(loadingToastId, {
       render: `${fieldName} Uploaded successfully`,
@@ -34,7 +34,7 @@ const uploadImages = async (fieldName, files) => {
     toast.dismiss(loadingToastId)
     toast.error(error?.response?.data?.message || error?.message, {
       toastId: fieldName + "-error", // Use a unique toastId for error Toast
-      autoClose:3000
+      autoClose: 3000
     });
   }
 }

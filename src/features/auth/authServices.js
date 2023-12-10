@@ -4,6 +4,8 @@ import { base_url } from "../../utils/baseUrl";
 const login = async (user) => {
   // const response = await axios.post(`${base_url}/auth/login`, user);
   const response = await axios.post(`${base_url}/auth/admin-login`, user);
+  // const response = await axios.post(`http://localhost:9000/api/v1/auth/admin-login`, user);
+
   if (response.data) {
     const { accessToken, email, role, uid } = response.data.data;
     console.log({ accessToken, email, role, uid });

@@ -17,7 +17,7 @@ const Addproduct = () => {
   const [form] = Form.useForm();
   const [discountType, setDiscountType] = useState("");
   const [discountValue, setDiscountValue] = useState(0);
-  const [productType, setProductType] = useState("");
+  const [productType, setProductType] = useState("simple_product");
   const navigate = useNavigate();
 
   const handleChange = (value) => {
@@ -87,7 +87,7 @@ const Addproduct = () => {
     // }
   };
 
-  const [attributes, setAttributes] = useState([{ label: "", values: [] }]);
+  const [attributes, setAttributes] = useState([]);
   const addAttribute = () => {
     const newAttributes = [...attributes, { label: "", values: [] }];
     setAttributes(newAttributes);
@@ -111,7 +111,7 @@ const Addproduct = () => {
     updatedAttributes[index].values = values;
     setAttributes(updatedAttributes);
   };
-  const [selectedCategory, setSelectedCategory] = useState(" "); // Initialize with an empty string or any default value
+  const [selectedCategory, setSelectedCategory] = useState(""); // Initialize with an empty string or any default value
 
   const handleCategoryChange = (value) => {
     setSelectedCategory(value);
@@ -142,7 +142,7 @@ const Addproduct = () => {
         price: parseFloat(values?.price),
         images,
         thumbnail,
-        stock: values.stock,
+        stock: values.stock || undefined,
         description: values.description,
         short_description: values.short_description,
         attributes: values.attributes,
@@ -206,13 +206,14 @@ const Addproduct = () => {
               id="productType"
               style={{ width: "100%" }}
               onChange={handleChange}
+              defaultValue={'simple_product'}
             >
               <Select.Option value="simple_product">
                 Simple Product
               </Select.Option>
-              <Select.Option value="variable_product">
+              {/* <Select.Option value="variable_product">
                 Variable Product
-              </Select.Option>
+              </Select.Option> */}
             </Select>
           </Col>
 
@@ -330,12 +331,13 @@ const Addproduct = () => {
               labelAlign="top"
               label="Stock"
               name="stock"
-              rules={[
-                {
-                  required: true,
-                  message: "Please enter the stock quantity",
-                },
-              ]}
+              // rules={[
+              //   {
+              //     required: true,
+              //     message: "Please enter the stock quantity",
+              //   },
+              // ]}
+
               labelCol={{ span: 24 }}
               wrapperCol={{ span: 24 }}
               style={{
@@ -489,7 +491,7 @@ const Addproduct = () => {
             Attribute & Tag
           </h4>
 
-          {attributes.map((attribute, index) => (
+          {attributes?.map((attribute, index) => (
             <Row gutter={16} key={index}>
               <Col xs={24} lg={8}>
                 <Form.Item
