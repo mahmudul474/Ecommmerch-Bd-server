@@ -266,7 +266,6 @@ const Addproduct = () => {
           wrapperCol={{ span: 24 }} // Span the entire width for the input
           style={{
             marginBottom: "2px",
-
             fontWeight: "500",
           }}
         >

@@ -1,8 +1,8 @@
+import { Input, Select } from "antd";
 import { React, useEffect, useState } from "react";
-import { Input } from "antd";
-import { toast } from "react-toastify";
+import ReactQuill from "react-quill";
 import { useNavigate } from "react-router-dom";
-import { Select } from "antd";
+import { toast } from "react-toastify";
 import useS3 from "../hooks/useS3";
 import { base_url } from "../utils/baseUrl";
 const { Option } = Select;
@@ -13,6 +13,7 @@ const Subcategory = () => {
   const [slug, setSlug] = useState("");
   const [category, setCategory] = useState([]);
   const [parentId, setParentId] = useState(null);
+  const [blog, setBlog] = useState("");
   const { uploadToS3 } = useS3();
   const navigate = useNavigate();
   const [singleFile, setSingleFile] = useState(null);
@@ -79,7 +80,7 @@ const Subcategory = () => {
   const handleCategoryChange = (value) => {
     if (value) {
       setParentId(value);
-     
+
     } else {
       setCategory(null);
     }
@@ -92,9 +93,14 @@ const Subcategory = () => {
       slug,
       icon,
       tags: tags,
+      blog
     };
 
-      console.log(parentId,"handleSubmit on get category id ")
+    console.log({
+      category
+    });
+
+    console.log(parentId, "handleSubmit on get category id ")
 
     if (parentId) {
       category.parentId = parentId;
@@ -228,6 +234,22 @@ const Subcategory = () => {
                 placeholder="Enter tags"
               />
             </div>
+          </div>
+          <div className="" style={{ marginTop: "20px" }}>
+            <label>Category Content : </label>
+            <ReactQuill
+              name="short_description"
+              style={{ height: "150px" }}
+              theme="snow"
+              onChange={(value) => setBlog(value)}
+            />
+            {/* <p style={{
+              padding: "10px",
+            }}>
+              <strong>Note: </strong>
+              User "#" symbol to mentions that keyword is dynamic. and use "#=" symbol mention the dynamic value.
+              Example: This content #content.
+            </p> */}
           </div>
 
           <button
