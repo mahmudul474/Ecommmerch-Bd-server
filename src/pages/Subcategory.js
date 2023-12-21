@@ -29,7 +29,7 @@ const Subcategory = () => {
     if (selectedFile) {
       const key = `path/to/single/${selectedFile.name}`;
       // const url = await uploadToS3(selectedFile, key);
-      const uploadInfo = await uploadImages('categoryIcon', e.target.files)
+      const uploadInfo = await uploadImages('category Icon', e.target.files)
       console.log(uploadInfo[0]);
       setIcon(uploadInfo[0]);
       // if (url) {
@@ -115,7 +115,7 @@ const Subcategory = () => {
       category.parentId = parentId;
     }
 
-    fetch(`http://localhost:9000/api/v1/category`, {
+    fetch(`${base_url}/category`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
