@@ -1,4 +1,4 @@
-import { Input, Select } from "antd";
+import { Form, Input, Select } from "antd";
 import { React, useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import { useNavigate } from "react-router-dom";
@@ -18,6 +18,8 @@ const Subcategory = () => {
   const { uploadToS3 } = useS3();
   const navigate = useNavigate();
   const [singleFile, setSingleFile] = useState(null);
+  const [metaTitle, setMetaTitle] = useState("");
+  const [metaDescription, setMetaDescription] = useState("")
 
   const handleSingleFileChange = async (e) => {
     const selectedFile = e.target.files[0];
@@ -96,7 +98,11 @@ const Subcategory = () => {
       slug,
       icon,
       tags: tags,
-      blog
+      blog,
+      metadata: {
+        title: metaTitle,
+        description: metaDescription
+      }
     };
 
     console.log({
@@ -109,7 +115,7 @@ const Subcategory = () => {
       category.parentId = parentId;
     }
 
-    fetch(`${base_url}/category`, {
+    fetch(`http://localhost:9000/api/v1/category`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -238,7 +244,7 @@ const Subcategory = () => {
               />
             </div>
           </div>
-          <div className="" style={{ marginTop: "20px" }}>
+          <div className="" style={{ marginTop: "20px", marginBottom: "70px" }}>
             <label>Category Content : </label>
             <ReactQuill
               name="short_description"
@@ -253,6 +259,47 @@ const Subcategory = () => {
               User "#" symbol to mentions that keyword is dynamic. and use "#=" symbol mention the dynamic value.
               Example: This content #content.
             </p> */}
+          </div>
+          <div
+            style={{
+              padding: "10px",
+              marginTop: "20px",
+              marginBottom: "10px",
+              borderRadius: "10px",
+              border: "1px solid grey",
+            }}
+          >
+            <h6 style={{ textAlign: "center" }}>META DATA</h6>
+
+            <Form.Item
+              labelAlign="top"
+              label="Meta Title"
+              name="MetaTitle"
+              labelCol={{ span: 24 }} // Span the entire width for the label
+              wrapperCol={{ span: 24 }} // Span the entire width for the input
+              style={{
+                marginBottom: "2px",
+
+                fontWeight: "500",
+              }}
+            >
+              <Input placeholder="Enter the Category title" onChange={(e) => setMetaTitle(e.target.value)} />
+            </Form.Item>
+
+            <Form.Item
+              labelAlign="top"
+              name="MetaDescription"
+              label="Meta Description"
+              labelCol={{ span: 24 }} // Span the entire width for the label
+              wrapperCol={{ span: 24 }} // Span the entire width for the input
+              style={{
+                marginBottom: "2px",
+
+                fontWeight: "500",
+              }}
+            >
+              <Input.TextArea placeholder="Enter the category description" onChange={(e) => setMetaDescription(e.target.value)} />
+            </Form.Item>
           </div>
 
           <button
