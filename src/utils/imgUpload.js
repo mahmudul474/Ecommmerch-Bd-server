@@ -20,7 +20,7 @@ const uploadImages = async (fieldName, files) => {
       autoClose: 600,
     });
 
-    console.log(upload.data);
+    // console.log(upload.data);
     let urls = [];
     upload?.data?.data?.map(each => {
       if (each.fieldName === fieldName) {

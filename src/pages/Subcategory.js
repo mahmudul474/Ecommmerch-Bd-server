@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import useS3 from "../hooks/useS3";
 import { base_url } from "../utils/baseUrl";
+import uploadImages from "../utils/imgUpload";
 const { Option } = Select;
 
 const Subcategory = () => {
@@ -25,11 +26,13 @@ const Subcategory = () => {
     // Use the uploadToS3 function to upload the single selected file immediately
     if (selectedFile) {
       const key = `path/to/single/${selectedFile.name}`;
-      const url = await uploadToS3(selectedFile, key);
-
-      if (url) {
-        setIcon(url);
-      }
+      // const url = await uploadToS3(selectedFile, key);
+      const uploadInfo = await uploadImages('categoryIcon', e.target.files)
+      console.log(uploadInfo[0]);
+      setIcon(uploadInfo[0]);
+      // if (url) {
+      //   setIcon(url);
+      // }
     }
   };
 
